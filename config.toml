@@ -1,0 +1,7 @@
+baseURL = "https://oreshika.github.io"
+title = "oreshika-blog"
+theme = "axiom"
+languageCode = "ja"
+defaultContentLanguage = "ja"
+hasCJKLanguage = true
+mainSections = ["blog"]
