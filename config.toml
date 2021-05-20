@@ -5,3 +5,4 @@ languageCode = "ja"
 defaultContentLanguage = "ja"
 hasCJKLanguage = true
 mainSections = ["blog"]
+publishDir = "docs"
