@@ -4,9 +4,7 @@ date: "2021-06-21T10:38:12+09:00"
 categories:
   - "kpt"
   - "k8s"
-featured:
-  url: image.jpg
-authorbox: false
+author: shiv3
 ---
 
 # KPT
