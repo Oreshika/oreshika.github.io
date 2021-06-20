@@ -1,0 +1,11 @@
+[default]
+name = "oreshika blog"
+uri = "https://oreshika.github.io/"
+twitter = "abematv"
+image = "image/author/abema.jpeg"
+
+[shiv3]
+name = "Shibazaki Takumi"
+uri = "https://github.com/shiv3"
+twitter = "lailaiskyn"
+image = "image/author/shiv3.jpeg"
