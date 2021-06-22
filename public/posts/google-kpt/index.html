@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
+<meta name="hugo-theme" content=" 0.8.0">
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/">
+  <link rel="icon" type="image/x-icon" href="/">
+  <link rel="apple-touch-icon" href="/">
+  <link rel="canonical" href="https://oreshika.github.io/posts/google-kpt/">
+<link rel="preload" as="style" href="/bundle.css?v=1624324743" media="all">
+<link rel="stylesheet" href="/bundle.css?v=1624324743" media="all">
+<style>.cdata pre{background-color:#1f2937;color:#e5e7eb}.cdata :not(pre)>code{background-color:#f3f4f6;color:#7c3aed}.chroma .err{background-color:#991b1b;color:#fecaca}.chroma .hl{background-color:#374151}.chroma .ln{color:#9ca3af}.chroma .k,.chroma .kc,.chroma .kd,.chroma .kn,.chroma .kp,.chroma .kr{color:#60a5fa}.chroma .kt{color:#a78bfa}.chroma .na,.chroma .nb{color:#fbbf24}.chroma .nc{color:#f87171}.chroma .no{color:#34d399}.chroma .nd{color:#f87171}.chroma .ne{color:#f87171}.chroma .nf{color:#fbbf24}.chroma .nt{color:#f87171}.chroma .l{color:#a78bfa}.chroma .dl,.chroma .ld,.chroma .s,.chroma .s2,.chroma .sa,.chroma .sb,.chroma .sc,.chroma .sd{color:#34d399}.chroma .se{color:#9ca3af}.chroma .s1,.chroma .sh,.chroma .si,.chroma .sr,.chroma .ss,.chroma .sx{color:#34d399}.chroma .il,.chroma .m,.chroma .mb,.chroma .mf,.chroma .mh,.chroma .mi,.chroma .mo{color:#a78bfa}.chroma .o,.chroma .ow{color:#93c5fd}.chroma .c,.chroma .c1,.chroma .ch,.chroma .cm,.chroma .cp,.chroma .cpf,.chroma .cs,.chroma .p{color:#9ca3af}.chroma .ge{font-style:italic}.chroma .gs{font-weight:700}
+</style>
+
+
+
+<title>20210621 : oreshika-blog</title>
+
+<meta property="og:title" content="20210621">
+<meta property="og:site_name" content="oreshika-blog">
+<meta property="og:url" content="https://oreshika.github.io/posts/google-kpt/">
+<link rel="image_src" href="https://oreshika.github.io/">
+<meta property="og:image" content="https://oreshika.github.io/">
+<meta property="og:image:width" content="">
+<meta property="og:image:height" content="">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ja">
+<meta property="og:description" content="KPT ABEMAでアドテクチームに所属しているshiv3です。 以前より、私達のチームではKubernetes上でマイクロサービスの開発・運用を行">
+<meta name="description" content="KPT ABEMAでアドテクチームに所属しているshiv3です。 以前より、私達のチームではKubernetes上でマイクロサービスの開発・運用を行">
+<meta property="og:updated_time" content="2021-06-21T01:38:12Z">
+<meta property="fb:app_id" content="">
+<meta name="author" content="Shibazaki Takumi">
+<meta property="article:author" content="https://github.com/shiv3">
+<meta property="article:published_time" content="2021-06-21T01:38:12Z">
+<meta property="article:modified_time" content="2021-06-21T01:38:12Z">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "20210621",
+  "alternativeHeadline": "KPT ABEMAでアドテクチームに所属しているshiv3です。 以前より、私達のチームではKubernetes上でマイクロサービスの開発・運用を行",
+  "url": "https://oreshika.github.io/posts/google-kpt/",
+  "image": "https://oreshika.github.io/",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://oreshika.github.io/posts/google-kpt/"
+  },
+  "description": "KPT ABEMAでアドテクチームに所属しているshiv3です。 以前より、私達のチームではKubernetes上でマイクロサービスの開発・運用を行",
+  "author": {
+    "@type": "Person",
+    "name": "Shibazaki Takumi"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "oreshika-blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://oreshika.github.io/"
+    }
+  },
+  "datePublished": "2021-06-21T01:38:12Z",
+  "dateModified": "2021-06-21T01:38:12Z",
+  "articleBody": "\u003ch1 id=\"kpt\"\u003eKPT\u003c/h1\u003e\n\u003cp\u003eABEMAでアドテクチームに所属しているshiv3です。\u003c/p\u003e\n\u003cp\u003e以前より、私達のチームではKubernetes上でマイクロサービスの開発・運用を行っています。Kubernetes上のリソースの構成は主にyamlで書かれていますが、そのyamlの管理をどうするかという話題が定期的に上がっておりました。\u003c/p\u003e\n\u003cp\u003e数ヶ月ほど前より私達のチームでは、新規開発されるサービス及び新しく作成したKubernetesクラスタのmanifest管理のためにkptというツールを使い始めました。\u003c/p\u003e\n\u003cp\u003ekptを使用することで利点もありましたが、いくつか大変だったこともあり、今回はそのkptについて紹介します。\u003c/p\u003e\n\u003ch2 id=\"以前までの構成管理\"\u003e以前までの構成管理\u003c/h2\u003e\n\u003cp\u003ekptの話の前に、以前までのmanifestの管理について紹介します。\u003c/p\u003e\n\u003cp\u003e以前まで私達のチームでは、k8sクラスタに上げるための構成は以下のようなシンプルな方法でyamlの管理を行っていました。(部分的にhelmを利用しています\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e構成管理を行うために二種類のファイルを用意\n\u003cul\u003e\n\u003cli\u003eJinja2のテンプレートで書かれたdeploymentやserviceなどの構成ファイル(xxx_deployment.template.yaml)\u003c/li\u003e\n\u003cli\u003e各環境ごと(prd/stg/dev/load)の設定情報を記述した設定ファイル(dev_var.yaml)\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e上記のファイルをpythonのスクリプトで結合・テンプレートの反映をさせて対象環境ごとのyamlを生成\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e上記の方法はhelmやkustomizeのような知識がなくとも誰でもカジュアルに使え、helm側のバージョン管理などを意識せずに使えたため便利ではあり、3年ほどこちらの方法で運用を行っていましたが、以下のような課題がありました。\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eテンプレート側のディレクトリ構成やファイル名のプレフィックスなどが煩雑になっていた\n\u003cul\u003e\n\u003cli\u003eディレクトリごとにenvファイルがあるため、そのファイルの設定記述が肥大化していた\u003c/li\u003e\n\u003cli\u003eCIでtemplateの展開を行うようにしていたが、CIの実行時間がファイル数に対し線形的に増加していた\u003c/li\u003e\n\u003cli\u003eマイクロサービスのコードとmanifestを管理されている部分の場所が離れている\u003c/li\u003e\n\u003cli\u003eどのコンポーネントがどのmanifestファイルでデプロイされているのかが分かりづらかった\u003c/li\u003e\n\u003cli\u003eコードの修正に伴う構成変更などが少し煩雑になりがちだった\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eもちろん、こちらの方法でのメリットも多かったのですが、新しくサービスを作るにあたって別の管理方法を試そうと思っていました。\u003c/p\u003e\n\u003ch2 id=\"manifest管理ツール\"\u003emanifest管理ツール\u003c/h2\u003e\n\u003cp\u003ekubernetesの構成管理ツールとしてはhelmやkustomizeなどが有名だと思いますが、新しく構成管理ツールとして検討していた当時はChartを構成するためのファイル構成が必要になったり、kustomizationの仕様が少し複雑になる可能性があるのではないかという懸念がありました。\u003c/p\u003e\n\u003cp\u003eその際に後述のkptというツールの存在を知り、kubernetesの素の構成ファイルをそのままテンプレートとして使えるという機能に魅力を感じ使用を検討しました。\u003c/p\u003e\n\u003ch2 id=\"kpt-1\"\u003eKPT\u003c/h2\u003e\n\u003cp\u003e\u003ca href=\"https://googlecontainertools.github.io/kpt/\"\u003ekpt\u003c/a\u003e\u003c/p\u003e\n\u003cp\u003eGoogleのオープンソースツールであるkptは、 \u003ca href=\"https://github.com/kubernetes/community/blob/master/contributors/design-proposals/architecture/resource-management.md\"\u003eKubernetes Resource Model(KRM)\u003c/a\u003eの構成を管理するための軽量なツールで、gitとyamlを組み合わせる形で利用を行い、構成をコード(template/DSL)としてではなくデータ(API)としてパッケージ化を行うというモデルを採用しています。\u003c/p\u003e\n\u003cp\u003e執筆時点でのバージョンは \u003ccode\u003ev0.39\u003c/code\u003e ですが、近々 \u003ccode\u003ev1.0.0\u003c/code\u003e のリリースも予定されています。\u003c/p\u003e\n\u003cp\u003ekptには以下のような特徴があります\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e\n\u003cp\u003eデータとしての構成管理\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e構成をコード(テンプレート/DSL)ではなく、静的なデータ(API)としてパッケージ化をします。\u003c/li\u003e\n\u003cli\u003eChefやTerraformのようなツールでは構成管理を順次実行可能なコードやDSLとして管理を行いますが、kptではほぼプレーンな状態のk8sのmanifestのyamlとして構成を管理を行います。\u003c/li\u003e\n\u003cli\u003eまた、kptで使用される構成は、スキーマとセマンティクスが定義されているKubernetes Resource Model（KRM）に準拠している必要があり、KRMにはk8sの構成だけでなくGCPのリソースなど、Kubernetes 以外のリソースも管理することが出来ます。\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003eShift-left \u0026amp; GitOps\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ekptではGitOpsを採用しています。\u003c/li\u003e\n\u003cli\u003eクラスターへの変更はgitを用いてreviewed, approved, validated, audited and rolled backが行われます。\u003c/li\u003e\n\u003cli\u003eまた、Gitの自動化をクラスタへの状態変更に使うことが出来ます。\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003eComposability\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e各コマンドの出力が別のコマンドの入力として読み取られることを期待して連携するような設計\n\u003cul\u003e\n\u003cli\u003eコマンドはmanifestの読み取りと書き込みを行う\u003c/li\u003e\n\u003cli\u003e入力と出力は対象である\u003c/li\u003e\n\u003cli\u003ekptコマンドを一緒にパイプすることが可能\u003c/li\u003e\n\u003cli\u003ekptコマンドの出力をそのソースに書き戻すことも可能\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003eリソース指向\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eシステムの状態は、Kubernetesのリソースをそのまま使用して表現されます。\u003c/li\u003e\n\u003cli\u003e高レベルのロジックはmanifestを読み込み、何らかのコンテキストでmanifestを生成出来ます。\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003eスキーマ駆動\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eタイプまたはオブジェクト固有のロジックをツールに組み込めません。\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003e\n\u003cp\u003eレイヤリング\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003e固有の複雑さを軽減し、ケースを単純化するために高レベルのレイヤーが存在できます。\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003eKptは上記の方針による構成管理をPackageとSetterでの設定管理で実現しています。\u003c/p\u003e\n\u003ch2 id=\"package\"\u003ePackage\u003c/h2\u003e\n\u003cp\u003ekptではKptfileというファイルが存在するディレクトリをpackageとして扱います。\npackageという単位はHelmのChartのようなものですが、gitでの管理のされ方はgoのパッケージ管理のようなものに近いかもしれません。\u003c/p\u003e\n\u003cp\u003epackageはmanifestがあるディレクトリにKptfileというファイルを作成することで管理されます。また、パッケージを取得すると配布側のパッケージの情報がKptfileに追記されて取得されます。\u003c/p\u003e\n\u003ch2 id=\"config\"\u003eConfig\u003c/h2\u003e\n\u003cp\u003ekptでは各manifestのyamlごとにテンプレートとして設定を変更する項目を、Key/Valueペアのsetterとして作成します。\nsetterを作成すると設定する箇所のKey/Valueペアの情報がKptfileに追記され、manifestのyamlの該当箇所にsetterとしてのコメントを記載しておくことでテンプレートとして変更可能となります。\u003c/p\u003e\n\u003ch2 id=\"使い方\"\u003e使い方\u003c/h2\u003e\n\u003cp\u003eチュートリアルについては\u003ca href=\"https://cloud.google.com/architecture/managing-cloud-infrastructure-using-kpt?hl=ja\"\u003eGoogle Cloudのドキュメント\u003c/a\u003eが良いかと思われます。\u003c/p\u003e\n\u003cp\u003eまたここでは、 \u003ccode\u003ev0.39\u003c/code\u003e から \u003ccode\u003ev1.0\u003c/code\u003e への変更による差分が少ない pkg / cfg の簡易的な使い方の説明を行います。\u003c/p\u003e\n\u003cp\u003ekptには以下のようなコマンド体系が存在します\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ekpt pkg\n\u003cul\u003e\n\u003cli\u003ekptパッケージを扱うためのコマンド。また、gitを使用してパッケージを取得・更新するためのコマンド\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003ekpt cfg\n\u003cul\u003e\n\u003cli\u003eSetterを使用してkptの設定値を設定、更新するためのコマンド\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003ekpt live\n\u003cul\u003e\n\u003cli\u003ekptパッケージをKubernetesクラスタにデプロイするためのコマンドです\u003c/li\u003e\n\u003cli\u003e以前はInventory templateというConfig Mapで管理されていましたが、 \u003ccode\u003ev1.0\u003c/code\u003eより \u003ccode\u003eResourceGroup\u003c/code\u003e CRDで管理されるように変更されました\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003ekpt fn\n\u003cul\u003e\n\u003cli\u003eローカルのkptパッケージ( KRM ) に対して操作を行える仕組み、及びそれを実行するためのコマンドです\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003ev1.0\u003c/code\u003e より \u003ccode\u003erun render\u003c/code\u003e / \u003ccode\u003erun eval\u003c/code\u003e に分割されました\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e\n\u003cp\u003e構成管理として簡易的に用いる場合は主に \u003ccode\u003ekpt pkg\u003c/code\u003e 及び \u003ccode\u003ekpt cfg\u003c/code\u003e のサブコマンドを用います。\u003c/p\u003e\n\u003ch3 id=\"publisher側\"\u003ePublisher側\u003c/h3\u003e\n\u003cp\u003e\u003cimg src=\"image1.png\" alt=\"\"\u003e\u003c/p\u003e\n\u003cp\u003eまず、packageの作成者は該当のpackageで \u003ccode\u003ekpt pkg init\u003c/code\u003e を実行し、packageを初期化します。Kptfileが作成され、packageの設定が記述されます。\u003c/p\u003e\n\u003ch4 id=\"configの設定\"\u003econfigの設定\u003c/h4\u003e\n\u003cp\u003e以下のようなDeploymentのyamlファイルをテンプレートを用い、replica数を変更出来るようにしたい場合、\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003ekind: Deployment\nmetadata:\n  name: foo\nspec:\n  replicas: 3\n\u003c/code\u003e\u003c/pre\u003e\u003cpre\u003e\u003ccode\u003ekpt cfg create-setter . replicas 3\n\u003c/code\u003e\u003c/pre\u003e\u003cp\u003eのように実行することで、Kptfileとyamlの対象のkeyにsetterが作成されます。\nこちらの値は、Consumer側がこのkptパッケージを使用する際のデフォルトの値となります。\u003c/p\u003e\n\u003cpre\u003e\u003ccode\u003ekind: Deployment\nmetadata:\n  name: foo\nspec:\n  replicas: 3 # {\u0026quot;$kpt-set\u0026quot;:\u0026quot;replicas\u0026quot;}\n\u003c/code\u003e\u003c/pre\u003e\u003cp\u003eこちらの設定されたファイル、及び作成されたKptfileをGithubなどのGitリポジトリにpushすることでパッケージの公開が完了します。\u003c/p\u003e\n\u003ch3 id=\"consumer側\"\u003eConsumer側\u003c/h3\u003e\n\u003cp\u003e\u003cimg src=\"image2.png\" alt=\"\"\u003e\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003eパッケージを使う側では、 \u003ccode\u003ekpt pkg get REPO_URI[.git]/PKG_PATH[@VERSION] my-app\u003c/code\u003e  を実行し上記で作成されたpackageを取得します。\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch4 id=\"configの設定-1\"\u003eConfigの設定\u003c/h4\u003e\n\u003cul\u003e\n\u003cli\u003e\u003ccode\u003ekpt cfg set my-app replicas --values 5\u003c/code\u003e を実行し、既に設定されていたreplica数の設定値を5に変更します。\u003c/li\u003e\n\u003cli\u003eあとはGitにpushしてGitopsなどでリリースを行うか、 \u003ccode\u003ekpt live\u003c/code\u003e コマンドを用いてリリースを行うことが出来ます。\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch2 id=\"使用感\"\u003e使用感\u003c/h2\u003e\n\u003cp\u003e良かった点、悪かった点としては以下のような形でした。\u003c/p\u003e\n\u003cul\u003e\n\u003cli\u003ecliのコマンドベースで構成を管理するツールとしては簡易的で良さそうだと思いました。\u003c/li\u003e\n\u003cli\u003e階層化された値を編集したり、configmapの中身を編集したりするのが難しいため、複雑な構成を管理するには難易度が高い\u003c/li\u003e\n\u003cli\u003e\u003ccode\u003ekpt pkg update\u003c/code\u003e コマンドを実行するたびに対象のリポジトリをcloneするため、モノレポなどと相性が悪い\u003c/li\u003e\n\u003cli\u003e開発中なので、v1.0安定版が出るまでは細かい機能については少し様子見が必要かもしれません。\u003c/li\u003e\n\u003c/ul\u003e\n\u003ch2 id=\"今後\"\u003e今後\u003c/h2\u003e\n\u003cp\u003e今回はkptでKubernetesのDeploymentの構成管理をするための本当に簡易的な使い方の説明でしたが、今後リリースを予定されているv1.0で大きく変わるliveやfunctionなどではKRMを管理する上での利点があるため、機会があれば紹介したいと思っています。\u003c/p\u003e\n\u003cp\u003eまた、kptを開発しているGCPは今後KRMのよるリソースの管理をKubernetesリソースだけではなくあらゆるGCPのリソースで可能にしていきたいという方針があるようで、既にConfig Connectorなどを使用してKubernetesクラスタ内からMemoryStoreなどのリソースを作成することが可能となっています。\u003c/p\u003e\n\u003cp\u003e\u003ca href=\"https://cloud.google.com/blog/ja/products/containers-kubernetes/understanding-configuration-as-data-in-kubernetes\"\u003ehttps://cloud.google.com/blog/ja/products/containers-kubernetes/understanding-configuration-as-data-in-kubernetes\u003c/a\u003e\u003c/p\u003e\n\u003cp\u003e執筆時点の現在はまだ開発中のツールですが、kptがKRMリソースの管理を行うツールの選択肢として候補に上げてみてはいかがでしょうか。気になった方はぜひ試して見てください。\u003c/p\u003e"
+}
+</script>
+
+<link rel="preload" as="script" href="/bundle.js?v=1624324743">
+
+
+</head>
+<body>
+
+  <header id="nav" class="header">
+  <div class="ax-l-i max-w-6xl">
+    <div class="ax-logo">
+      <a class="block" href="/" title="oreshika-blog"><span class="font-semibold text-raven-900">oreshika-blog</span></a>
+    </div>
+    <div class="ax-user">
+      <a class="p-2 w-8 h-8 block text-raven-500 hover:text-gray-800 focus:text-gray-800 focus:outline-none" target="_blank" rel="noopener nofollow" href="https://www.google.com/search?q=site:https://oreshika.github.io" title="">
+        <svg class="fill-current" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M2.67 12.804c0-5.6 4.544-10.134 10.133-10.134s10.134 4.544 10.134 10.134-4.544 10.133-10.134 10.133S2.67 18.393 2.67 12.804zm28.943 16.923l-8.868-8.868c4.287-5.3 3.68-13.012-1.378-17.57S8.564-1.066 3.75 3.75s-5.017 12.558-.46 17.618 12.28 5.665 17.57 1.378l8.868 8.868a1.33 1.33 0 0 0 2.231-.597c.123-.46-.008-.952-.345-1.29h0z"/></svg>
+
+      </a>
+    </div>
+  </div>
+
+  
+</header>
+
+  <main>
+<div class="default-single">
+  <div class="ax-title ax-l-o">
+    <div class="ax-l-i max-w-680">
+      <h1 class="post-title font-content-title font-normal leading-tight tracking-default text-40">20210621</h1>
+
+      <div class="ax-meta flex items-center mt-5">
+        <div class="flex-grow min-w-0">
+          <div class="flex items-center">
+  <div class="flex-shrink-0">
+    <img
+    class="w-12 h-12 sm:w-14 sm:h-14 object-cover p-3px rounded-full border border-blue-300"
+    src="/image/author/shiv3.jpeg"
+    alt="Shibazaki Takumi">
+  </div>
+  <div class="flex-shrink-0 ml-2 leading-tight font-content-sans">
+    <a class="block text-sm text-raven-800 hover:text-raven-900 hover:underline focus:underline" target="_blank" rel="noopener nofollow" title="Shibazaki Takumi" href="https://github.com/shiv3">Shibazaki Takumi</a>
+    <time class="text-sm text-raven-500" datetime="2021-06-21T01:38:12Z">Jun 21, 2021 10:38AM</time>
+  </div>
+</div>
+
+        </div>
+        <div>
+          <div class="flex items-center">
+    <a class="flex-shrink-0 block text-raven-800 hover:text-raven-900" target="_blank" rel="noopener nofollow" title="" href="https://twitter.com/intent/tweet?text=20210621%20by%20%40lailaiskyn%20https%3a%2f%2foreshika.github.io%2fposts%2fgoogle-kpt%2f"><svg class="w-6 h-6 fill-current" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M32 6.078c-1.2.522-2.458.868-3.78 1.036 1.36-.812 2.398-2.088 2.886-3.626a13.11 13.11 0 0 1-4.16 1.588C25.742 3.794 24.026 3 22.154 3a6.56 6.56 0 0 0-6.556 6.562c0 .52.044 1.02.152 1.496-5.454-.266-10.28-2.88-13.522-6.862-.566.982-.898 2.106-.898 3.316a6.57 6.57 0 0 0 2.914 5.452 6.48 6.48 0 0 1-2.964-.808v.072c0 3.188 2.274 5.836 5.256 6.446-.534.146-1.116.216-1.72.216-.42 0-.844-.024-1.242-.112.85 2.598 3.262 4.508 6.13 4.57a13.18 13.18 0 0 1-8.134 2.798c-.538 0-1.054-.024-1.57-.1C2.906 27.93 6.35 29 10.064 29c12.072 0 18.672-10 18.672-18.668 0-.3-.01-.57-.024-.848C30.014 8.56 31.108 7.406 32 6.078z"/></svg>
+</a>
+    <a class="ml-3 flex-shrink-0 block text-raven-800 hover:text-raven-900" target="_blank" rel="noopener nofollow" title="" href="https://www.facebook.com/dialog/share?app_id=&display=page&href=https%3a%2f%2foreshika.github.io%2fposts%2fgoogle-kpt%2f"><svg class="w-6 h-6 fill-current" viewBox="-7 -3.5 39 39" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M30.234 0H1.765C.8.001 0 .79 0 1.766v28.47C.001 31.2.79 32 1.766 32h15.328V19.625h-4.156V14.78h4.156v-3.564c0-4.134 2.523-6.384 6.21-6.384 1.766 0 3.284.13 3.726.2v4.32h-2.543c-2.006 0-2.394.953-2.394 2.352v3.085h4.797l-.625 4.844h-4.172V32h8.14C31.21 32 32 31.2 32 30.234V1.765C32 .8 31.21 0 30.234 0z"/></svg>
+</a>
+</div>
+        </div>
+      </div>
+    </div>
+  </div><div class="ax-content ax-l-o">
+    <div class="ax-l-i max-w-680">
+      <article class="cdata">
+<h1 id="kpt">KPT</h1>
+<p>ABEMAでアドテクチームに所属しているshiv3です。</p>
+<p>以前より、私達のチームではKubernetes上でマイクロサービスの開発・運用を行っています。Kubernetes上のリソースの構成は主にyamlで書かれていますが、そのyamlの管理をどうするかという話題が定期的に上がっておりました。</p>
+<p>数ヶ月ほど前より私達のチームでは、新規開発されるサービス及び新しく作成したKubernetesクラスタのmanifest管理のためにkptというツールを使い始めました。</p>
+<p>kptを使用することで利点もありましたが、いくつか大変だったこともあり、今回はそのkptについて紹介します。</p>
+<h2 id="以前までの構成管理">以前までの構成管理</h2>
+<p>kptの話の前に、以前までのmanifestの管理について紹介します。</p>
+<p>以前まで私達のチームでは、k8sクラスタに上げるための構成は以下のようなシンプルな方法でyamlの管理を行っていました。(部分的にhelmを利用しています</p>
+<ul>
+<li>構成管理を行うために二種類のファイルを用意
+<ul>
+<li>Jinja2のテンプレートで書かれたdeploymentやserviceなどの構成ファイル(xxx_deployment.template.yaml)</li>
+<li>各環境ごと(prd/stg/dev/load)の設定情報を記述した設定ファイル(dev_var.yaml)</li>
+</ul>
+</li>
+<li>上記のファイルをpythonのスクリプトで結合・テンプレートの反映をさせて対象環境ごとのyamlを生成</li>
+</ul>
+<p>上記の方法はhelmやkustomizeのような知識がなくとも誰でもカジュアルに使え、helm側のバージョン管理などを意識せずに使えたため便利ではあり、3年ほどこちらの方法で運用を行っていましたが、以下のような課題がありました。</p>
+<ul>
+<li>テンプレート側のディレクトリ構成やファイル名のプレフィックスなどが煩雑になっていた
+<ul>
+<li>ディレクトリごとにenvファイルがあるため、そのファイルの設定記述が肥大化していた</li>
+<li>CIでtemplateの展開を行うようにしていたが、CIの実行時間がファイル数に対し線形的に増加していた</li>
+<li>マイクロサービスのコードとmanifestを管理されている部分の場所が離れている</li>
+<li>どのコンポーネントがどのmanifestファイルでデプロイされているのかが分かりづらかった</li>
+<li>コードの修正に伴う構成変更などが少し煩雑になりがちだった</li>
+</ul>
+</li>
+</ul>
+<p>もちろん、こちらの方法でのメリットも多かったのですが、新しくサービスを作るにあたって別の管理方法を試そうと思っていました。</p>
+<h2 id="manifest管理ツール">manifest管理ツール</h2>
+<p>kubernetesの構成管理ツールとしてはhelmやkustomizeなどが有名だと思いますが、新しく構成管理ツールとして検討していた当時はChartを構成するためのファイル構成が必要になったり、kustomizationの仕様が少し複雑になる可能性があるのではないかという懸念がありました。</p>
+<p>その際に後述のkptというツールの存在を知り、kubernetesの素の構成ファイルをそのままテンプレートとして使えるという機能に魅力を感じ使用を検討しました。</p>
+<h2 id="kpt-1">KPT</h2>
+<p><a href="https://googlecontainertools.github.io/kpt/">kpt</a></p>
+<p>Googleのオープンソースツールであるkptは、 <a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/architecture/resource-management.md">Kubernetes Resource Model(KRM)</a>の構成を管理するための軽量なツールで、gitとyamlを組み合わせる形で利用を行い、構成をコード(template/DSL)としてではなくデータ(API)としてパッケージ化を行うというモデルを採用しています。</p>
+<p>執筆時点でのバージョンは <code>v0.39</code> ですが、近々 <code>v1.0.0</code> のリリースも予定されています。</p>
+<p>kptには以下のような特徴があります</p>
+<ul>
+<li>
+<p>データとしての構成管理</p>
+<ul>
+<li>構成をコード(テンプレート/DSL)ではなく、静的なデータ(API)としてパッケージ化をします。</li>
+<li>ChefやTerraformのようなツールでは構成管理を順次実行可能なコードやDSLとして管理を行いますが、kptではほぼプレーンな状態のk8sのmanifestのyamlとして構成を管理を行います。</li>
+<li>また、kptで使用される構成は、スキーマとセマンティクスが定義されているKubernetes Resource Model（KRM）に準拠している必要があり、KRMにはk8sの構成だけでなくGCPのリソースなど、Kubernetes 以外のリソースも管理することが出来ます。</li>
+</ul>
+</li>
+<li>
+<p>Shift-left &amp; GitOps</p>
+<ul>
+<li>kptではGitOpsを採用しています。</li>
+<li>クラスターへの変更はgitを用いてreviewed, approved, validated, audited and rolled backが行われます。</li>
+<li>また、Gitの自動化をクラスタへの状態変更に使うことが出来ます。</li>
+</ul>
+</li>
+<li>
+<p>Composability</p>
+<ul>
+<li>各コマンドの出力が別のコマンドの入力として読み取られることを期待して連携するような設計
+<ul>
+<li>コマンドはmanifestの読み取りと書き込みを行う</li>
+<li>入力と出力は対象である</li>
+<li>kptコマンドを一緒にパイプすることが可能</li>
+<li>kptコマンドの出力をそのソースに書き戻すことも可能</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>リソース指向</p>
+<ul>
+<li>システムの状態は、Kubernetesのリソースをそのまま使用して表現されます。</li>
+<li>高レベルのロジックはmanifestを読み込み、何らかのコンテキストでmanifestを生成出来ます。</li>
+</ul>
+</li>
+<li>
+<p>スキーマ駆動</p>
+<ul>
+<li>タイプまたはオブジェクト固有のロジックをツールに組み込めません。</li>
+</ul>
+</li>
+<li>
+<p>レイヤリング</p>
+<ul>
+<li>固有の複雑さを軽減し、ケースを単純化するために高レベルのレイヤーが存在できます。</li>
+</ul>
+</li>
+</ul>
+<p>Kptは上記の方針による構成管理をPackageとSetterでの設定管理で実現しています。</p>
+<h2 id="package">Package</h2>
+<p>kptではKptfileというファイルが存在するディレクトリをpackageとして扱います。
+packageという単位はHelmのChartのようなものですが、gitでの管理のされ方はgoのパッケージ管理のようなものに近いかもしれません。</p>
+<p>packageはmanifestがあるディレクトリにKptfileというファイルを作成することで管理されます。また、パッケージを取得すると配布側のパッケージの情報がKptfileに追記されて取得されます。</p>
+<h2 id="config">Config</h2>
+<p>kptでは各manifestのyamlごとにテンプレートとして設定を変更する項目を、Key/Valueペアのsetterとして作成します。
+setterを作成すると設定する箇所のKey/Valueペアの情報がKptfileに追記され、manifestのyamlの該当箇所にsetterとしてのコメントを記載しておくことでテンプレートとして変更可能となります。</p>
+<h2 id="使い方">使い方</h2>
+<p>チュートリアルについては<a href="https://cloud.google.com/architecture/managing-cloud-infrastructure-using-kpt?hl=ja">Google Cloudのドキュメント</a>が良いかと思われます。</p>
+<p>またここでは、 <code>v0.39</code> から <code>v1.0</code> への変更による差分が少ない pkg / cfg の簡易的な使い方の説明を行います。</p>
+<p>kptには以下のようなコマンド体系が存在します</p>
+<ul>
+<li>kpt pkg
+<ul>
+<li>kptパッケージを扱うためのコマンド。また、gitを使用してパッケージを取得・更新するためのコマンド</li>
+</ul>
+</li>
+<li>kpt cfg
+<ul>
+<li>Setterを使用してkptの設定値を設定、更新するためのコマンド</li>
+</ul>
+</li>
+<li>kpt live
+<ul>
+<li>kptパッケージをKubernetesクラスタにデプロイするためのコマンドです</li>
+<li>以前はInventory templateというConfig Mapで管理されていましたが、 <code>v1.0</code>より <code>ResourceGroup</code> CRDで管理されるように変更されました</li>
+</ul>
+</li>
+<li>kpt fn
+<ul>
+<li>ローカルのkptパッケージ( KRM ) に対して操作を行える仕組み、及びそれを実行するためのコマンドです</li>
+<li><code>v1.0</code> より <code>run render</code> / <code>run eval</code> に分割されました</li>
+</ul>
+</li>
+</ul>
+<p>構成管理として簡易的に用いる場合は主に <code>kpt pkg</code> 及び <code>kpt cfg</code> のサブコマンドを用います。</p>
+<h3 id="publisher側">Publisher側</h3>
+<p><img src="image1.png" alt=""></p>
+<p>まず、packageの作成者は該当のpackageで <code>kpt pkg init</code> を実行し、packageを初期化します。Kptfileが作成され、packageの設定が記述されます。</p>
+<h4 id="configの設定">configの設定</h4>
+<p>以下のようなDeploymentのyamlファイルをテンプレートを用い、replica数を変更出来るようにしたい場合、</p>
+<pre><code>kind: Deployment
+metadata:
+  name: foo
+spec:
+  replicas: 3
+</code></pre><pre><code>kpt cfg create-setter . replicas 3
+</code></pre><p>のように実行することで、Kptfileとyamlの対象のkeyにsetterが作成されます。
+こちらの値は、Consumer側がこのkptパッケージを使用する際のデフォルトの値となります。</p>
+<pre><code>kind: Deployment
+metadata:
+  name: foo
+spec:
+  replicas: 3 # {&quot;$kpt-set&quot;:&quot;replicas&quot;}
+</code></pre><p>こちらの設定されたファイル、及び作成されたKptfileをGithubなどのGitリポジトリにpushすることでパッケージの公開が完了します。</p>
+<h3 id="consumer側">Consumer側</h3>
+<p><img src="image2.png" alt=""></p>
+<ul>
+<li>パッケージを使う側では、 <code>kpt pkg get REPO_URI[.git]/PKG_PATH[@VERSION] my-app</code>  を実行し上記で作成されたpackageを取得します。</li>
+</ul>
+<h4 id="configの設定-1">Configの設定</h4>
+<ul>
+<li><code>kpt cfg set my-app replicas --values 5</code> を実行し、既に設定されていたreplica数の設定値を5に変更します。</li>
+<li>あとはGitにpushしてGitopsなどでリリースを行うか、 <code>kpt live</code> コマンドを用いてリリースを行うことが出来ます。</li>
+</ul>
+<h2 id="使用感">使用感</h2>
+<p>良かった点、悪かった点としては以下のような形でした。</p>
+<ul>
+<li>cliのコマンドベースで構成を管理するツールとしては簡易的で良さそうだと思いました。</li>
+<li>階層化された値を編集したり、configmapの中身を編集したりするのが難しいため、複雑な構成を管理するには難易度が高い</li>
+<li><code>kpt pkg update</code> コマンドを実行するたびに対象のリポジトリをcloneするため、モノレポなどと相性が悪い</li>
+<li>開発中なので、v1.0安定版が出るまでは細かい機能については少し様子見が必要かもしれません。</li>
+</ul>
+<h2 id="今後">今後</h2>
+<p>今回はkptでKubernetesのDeploymentの構成管理をするための本当に簡易的な使い方の説明でしたが、今後リリースを予定されているv1.0で大きく変わるliveやfunctionなどではKRMを管理する上での利点があるため、機会があれば紹介したいと思っています。</p>
+<p>また、kptを開発しているGCPは今後KRMのよるリソースの管理をKubernetesリソースだけではなくあらゆるGCPのリソースで可能にしていきたいという方針があるようで、既にConfig Connectorなどを使用してKubernetesクラスタ内からMemoryStoreなどのリソースを作成することが可能となっています。</p>
+<p><a href="https://cloud.google.com/blog/ja/products/containers-kubernetes/understanding-configuration-as-data-in-kubernetes">https://cloud.google.com/blog/ja/products/containers-kubernetes/understanding-configuration-as-data-in-kubernetes</a></p>
+<p>執筆時点の現在はまだ開発中のツールですが、kptがKRMリソースの管理を行うツールの選択肢として候補に上げてみてはいかがでしょうか。気になった方はぜひ試して見てください。</p>
+
+      </article>
+      
+
+      
+
+    </div>
+  </div>
+</div>
+
+  </main>
+  <footer class="footer">
+  <div class="ax-l-i max-w-6xl">
+    <nav class="flex items-center justify-center">
+    </nav>
+
+    <div class="footer-copyright text-sm text-center text-gray-400 mt-4">
+      &#169; -2021 oreshika-blog
+    </div>
+    <div class="text-sm sm:text-xs text-center text-gray-400 mt-2">
+       <a href="https://www.axiomtheme.com/?utm_source=theme-footer&utm_medium=website&utm_campaign=referral"></a>
+    </div>
+  </div>
+</footer>
+
+<script src="/bundle.js?v=1624324743"></script>
+
+
+</body>
+</html>
