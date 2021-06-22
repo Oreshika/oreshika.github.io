@@ -4,6 +4,6 @@ theme = "axiom"
 languageCode = "ja"
 defaultContentLanguage = "ja"
 hasCJKLanguage = true
+publishDir = "docs"
 [params]
 mainSections = ["posts"]
-publishDir = "docs"
